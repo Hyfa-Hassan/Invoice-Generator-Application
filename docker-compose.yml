@@ -1,0 +1,23 @@
+services:
+  # MongoDB Service
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  # Node.js App Service
+  app:
+    build: .
+    container_name: invoice-generator
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: mongodb://mongo:27017/invoices
+
+volumes:
+  mongo-data:
